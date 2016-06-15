@@ -3,7 +3,7 @@ from caffe import layers as L, params as P, to_proto
 from caffe.proto import caffe_pb2
 from myLayers import *
 
-
+real = True
 def resnet(leveldb, batch_size=128, stages=[2, 2, 2, 2], first_output=16):
     feature_size=32
     data, label = L.Data(source=leveldb, backend=P.Data.LEVELDB, batch_size=batch_size, ntop=2,
