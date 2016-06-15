@@ -1,4 +1,5 @@
 import numpy as np
+import caffe
 
 def sample_gates():
     for i in addtables:
