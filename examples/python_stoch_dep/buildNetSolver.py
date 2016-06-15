@@ -1,6 +1,7 @@
 from __future__ import print_function
 from caffe import layers as L, params as P, to_proto
 from caffe.proto import caffe_pb2
+from myLayers import *
 
 
 def resnet(leveldb, batch_size=128, stages=[2, 2, 2, 2], first_output=16):
