@@ -1,6 +1,3 @@
-from __future__ import print_function
-from caffe import layers as L, params as P, to_proto
-from caffe.proto import caffe_pb2
 import caffe
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,8 +5,8 @@ import time
 import datetime
 from PIL import Image
 import sys
-from myLayers import *
 from buildNetSolver import *
+from solverHelpers import *
 sys.setrecursionlimit(150000)
 
 # helper function for common structures
@@ -20,20 +17,6 @@ def log():
     print ('niter: ', niter)
     print ('lr: ', lr)
     print ('real: ', real)
-
-def sample_gates():
-    for i in addtables:
-        if np.random.rand(1)[0] < solver.net.layers[i].deathRate:
-            solver.net.layers[i].gate = False
-        else:
-            solver.net.layers[i].gate = True
-
-def show_gates():
-    a = []
-    for i in addtables:
-        a.append(solver.net.layers[i].gate)
-        a.append(solver.net.layers[i].deathRate)
-    print(a)
 
 # if __name__ == '__main__':
 if True:
@@ -114,35 +97,3 @@ if True:
     #     sample_gates()
     #     solver.step(1)
     #     loss += solver.net.blobs['SoftmaxWithLoss1'].data
-
-class RandAdd(caffe.Layer):
-
-    def setup(self, bottom, top):
-        assert len(bottom) == 2
-        self.train = False
-        self.gate = False
-        self.deathRate = 0
-    def reshape(self, bottom, top):
-        top[0].reshape(*bottom[0].data.shape)
-
-    def forward(self, bottom, top):
-        #bottom[0] is skip connection
-        if self.train:
-            if self.gate:
-                top[0].data[...] = bottom[0].data + bottom[1].data
-            else:
-                top[0].data[...] = bottom[0].data
-        else:
-            top[0].data[...] = bottom[0].data + bottom[1].data * (1- self.deathRate)
-            # print('test')
-
-    def backward(self, top, propagate_down, bottom):
-        if self.train:
-            if self.gate:
-                bottom[0].diff[...] = top[0].diff
-                bottom[1].diff[...] = top[0].diff
-            else:
-                bottom[0].diff[...] = top[0].diff
-                bottom[1].diff[...] = np.zeros(bottom[0].diff.shape)
-        else:
-            print("No backward during testing!")
