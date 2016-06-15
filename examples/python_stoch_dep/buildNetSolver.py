@@ -1,3 +1,7 @@
+from caffe import layers as L, params as P, to_proto
+from __future__ import print_function
+from caffe.proto import caffe_pb2
+
 
 def resnet(leveldb, batch_size=128, stages=[2, 2, 2, 2], first_output=16):
     feature_size=32
