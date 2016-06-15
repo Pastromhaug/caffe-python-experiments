@@ -1,0 +1,15 @@
+train_net: "examples/python_stoch_dep/residual_train.prototxt"
+test_net: "examples/python_stoch_dep/residual_test.prototxt"
+test_iter: 100
+test_interval: 10000
+base_lr: 0.1
+max_iter: 200000
+lr_policy: "multistep"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0001
+solver_mode: GPU
+random_seed: 831486
+stepvalue: 100000
+stepvalue: 150000
+type: "Nesterov"
